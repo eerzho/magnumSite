@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -49,17 +50,30 @@ public class MainController {
             @RequestParam(name = "user_name") String name,
             @RequestParam(name = "user_email") String email,
             @RequestParam(name = "user_password") String password,
-            @RequestParam(name = "user_rePassword") String rePassword){
-        if (password.equals(rePassword)) {
-            Set<Roles> roles = new HashSet<>();
-            Roles r = rolesRepository.findById(2L).orElse(null);
-            roles.add(r);
-            Users user;
-            user = new Users(email, passwordEncoder.encode(password), name, roles);
+            @RequestParam(name = "user_rePassword") String rePassword,
+            Model model){
+        model.addAttribute("save_name", name);
+        model.addAttribute("save_email", email);
+        if (password.length() > 6) {
+            if (password.equals(rePassword)) {
+                Set<Roles> roles = new HashSet<>();
+                Roles r = rolesRepository.findById(2L).orElse(null);
+                roles.add(r);
+                Users user;
+                user = new Users(email, passwordEncoder.encode(password), name, roles);
 
-            userRepository.save(user);
+                userRepository.save(user);
+            }
+            else {
+                model.addAttribute("error", "Password and rePassword not equals");
+                return "guest/registration";
+            }
         }
-        return "index";
+        else {
+            model.addAttribute("error", "Password length < 6");
+            return "guest/registration";
+        }
+        return "guest/login";
     }
 
 //    функций для пользавателя
