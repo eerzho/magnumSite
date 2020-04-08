@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="~{layouts/main.html}"
+      lang="en">
+<title>Update user data</title>
+<div layout:fragment="header">
+    <section class="banner-area text-center" style="background-color: whitesmoke; background-image: none">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form action="/updateUser" method="post">
+                        <input type="hidden" name="user_id" th:value="${user.id}">
+                        <input  th:value="${user.email}"
+                               type="email"
+                               name="user_email"
+                               style="
+                                        width: 50%;
+                                        border: 1px solid #eee;
+                                        padding: 12px 20px;
+                                        margin-bottom: 20px">
+                        <br>
+                        <input  th:value="${user.fullName}"
+                               type="text"
+                               name="user_name"
+                               style="
+                                        width: 50%;
+                                        border: 1px solid #eee;
+                                        padding: 12px 20px;
+                                        margin-bottom: 20px">
+                        <br>
+                        <input th:value="${user.password}"
+                               type="password"
+                               name="user_password"
+                               style="
+                                        width: 50%;
+                                        border: 1px solid #eee;
+                                        padding: 12px 20px;
+                                        margin-bottom: 20px">
+                        <br>
+                        <button type="submit" class="template-btn">Update</button>
+                    </form>
+                    <br>
+                    <form action="/block" method="post">
+                        <input type="hidden" name="user_id" th:value="${user.id}">
+                        <button type="submit" class="template-btn">Block</button>
+                    </form>
+                    <br>
+                    <form action="/delete" method="post">
+                        <input type="hidden" name="user_id" th:value="${user.id}">
+                        <button type="submit" class="template-btn">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</html>
