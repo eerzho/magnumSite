@@ -5,15 +5,24 @@ import kz.iitu.javaee.ilyasProject.entities.Users;
 import kz.iitu.javaee.ilyasProject.repositories.RolesRepository;
 import kz.iitu.javaee.ilyasProject.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -27,25 +36,38 @@ public class MainController {
     @Autowired
     private RolesRepository rolesRepository;
 
-//    цукцукцук
     @GetMapping(path = "/")
     public String index(Model model){
         model.addAttribute("classActiveSettingsIndexPage", "active");
         return "index";
     }
+    public Users getUserData(){
+        Users userData = null;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(!(authentication instanceof AnonymousAuthenticationToken)){
+            User secUser = (User)authentication.getPrincipal();
+
+            System.out.println("TUTA GET USERNAME" + secUser.getUsername());
+            userData = userRepository.findByEmail(secUser.getUsername());
+        }
+        return userData;
+    }
 //    эти функций для гостя сайта
     @GetMapping(path = "/login")
+    @PreAuthorize("isAnonymous()")
     public String login(Model model){
         return "guest/login";
     }
 
 
     @GetMapping(path = "/registration")
+    @PreAuthorize("isAnonymous()")
     public String registration (Model model){
         return "guest/registration";
     }
 
     @PostMapping(value = "/register")
+    @PreAuthorize("isAnonymous()")
     public String register(
             @RequestParam(name = "user_name") String name,
             @RequestParam(name = "user_email") String email,
@@ -54,32 +76,193 @@ public class MainController {
             Model model){
         model.addAttribute("save_name", name);
         model.addAttribute("save_email", email);
-        if (password.length() > 6) {
-            if (password.equals(rePassword)) {
-                Set<Roles> roles = new HashSet<>();
-                Roles r = rolesRepository.findById(2L).orElse(null);
-                roles.add(r);
-                Users user;
-                user = new Users(email, passwordEncoder.encode(password), name, roles);
+        if (userRepository.findByEmail(email) == null) {
+            if (password.length() > 6) {
+                if (password.equals(rePassword)) {
+                    Set<Roles> roles = new HashSet<>();
+                    Roles r = rolesRepository.findById(2L).orElse(null);
+                    roles.add(r);
+                    Users user;
+                    user = new Users(email, passwordEncoder.encode(password), name, true, roles);
 
-                userRepository.save(user);
+                    userRepository.save(user);
+                }
+                else {
+                    model.addAttribute("error", "Password mismatch");
+                    return "guest/registration";
+                }
             }
             else {
-                model.addAttribute("error", "Password and rePassword not equals");
+                model.addAttribute("error", "Password must be at least 6");
                 return "guest/registration";
             }
         }
-        else {
-            model.addAttribute("error", "Password length < 6");
+        else{
+            model.addAttribute("error", "This email address is already registered");
             return "guest/registration";
         }
         return "guest/login";
     }
-
 //    функций для пользавателя
     @GetMapping(path = "/profile")
+    @PreAuthorize("isAuthenticated()")
     public String profile(Model model){
-        return "profile";
+        model.addAttribute("user", getUserData());
+        return "user/profile";
     }
 
+    @GetMapping(path = "/updatePassword/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public String updatePasswordPage(ModelMap model, @PathVariable(name = "id") Long id){
+        Users user = userRepository.findById(id).orElse(null);
+        model.addAttribute("user",user);
+        return "user/updatePasswordPage";
+    }
+
+    @PostMapping(value = "/changePassword")
+    @PreAuthorize("isAuthenticated()")
+    public String changePassword(
+            @RequestParam(name = "oldPassword") String oldPassword,
+            @RequestParam(name = "password") String password,
+            @RequestParam(name = "rePassword") String rePassword,
+            Model model){
+        Users user = userRepository.findById(getUserData().getId()).orElse(null);
+        if (passwordEncoder.matches(oldPassword, user.getPassword())) {
+            if (password.length() > 6) {
+                if (password.equals(rePassword)) {
+                    user.setPassword(passwordEncoder.encode(password));
+                }
+                else {
+                    model.addAttribute("error", "Password mismatch");
+                    return "user/updatePasswordPage";
+                }
+            }
+            else {
+                model.addAttribute("error", "Password must be at least 6");
+                return "user/updatePasswordPage";
+            }
+        }
+        else {
+            model.addAttribute("error", "Old password is entered incorrectly");
+            return "user/updatePasswordPage";
+        }
+        userRepository.save(user);
+        return "redirect:/profile";
+    }
+
+    @GetMapping(path = "/updateData/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public String updateDataPage(ModelMap model, @PathVariable(name = "id") Long id){
+        Users user = userRepository.findById(id).orElse(null);
+        model.addAttribute("user",user);
+        return "user/updateDataPage";
+    }
+
+    @PostMapping(value = "/changeData")
+    @PreAuthorize("isAuthenticated()")
+    public String changeData(
+            @RequestParam(name = "email") String email,
+            @RequestParam(name = "name") String name,
+            @RequestParam(name = "password") String password,
+            Model model){
+        Users user = userRepository.findById(getUserData().getId()).orElse(null);
+        if (passwordEncoder.matches(password, user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(password));
+            user.setEmail(email);
+            user.setFullName(name);
+            userRepository.save(user);
+        }
+        else {
+            model.addAttribute("error", "Password is entered incorrectly");
+            return "user/updateDataPage";
+        }
+        return "redirect:/profile";
+    }
+
+    //    функций для admina
+    @GetMapping(path = "/users")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public String users(Model model){
+        model.addAttribute("user", getUserData());
+
+        List<Users> allUsers = userRepository.findAll();
+        List<Users> simpleUsers = new ArrayList<>();
+
+        Roles r = rolesRepository.findById(2L).orElse(null);
+        System.out.println(r+"ASDASDASDASDASDAS");
+        for(Users u:allUsers){
+            if(u.getRoles().contains(r))
+                simpleUsers.add(u);
+        }
+        model.addAttribute("userList", simpleUsers);
+        return "admin/users";
+    }
+    @PostMapping(value = "/addUser")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public String addUser(
+            @RequestParam(name = "user_name") String name,
+            @RequestParam(name = "user_email") String email,
+            @RequestParam(name = "user_password") String password,
+            Model model){
+        if (userRepository.findByEmail(email) == null) {
+            if (password.length() > 6) {
+                Set<Roles> roles = new HashSet<>();
+                Roles r = rolesRepository.findById(2L).orElse(null);
+                roles.add(r);
+                Users user;
+                user = new Users(email, passwordEncoder.encode(password), name, true, roles);
+
+                userRepository.save(user);
+            }
+        }
+        return "redirect:/users";
+    }
+
+    @GetMapping(path = "/editUser/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public String userEdit(ModelMap model, @PathVariable(name = "id") Long id){
+        Users user = userRepository.findById(id).orElse(null);
+        model.addAttribute("user",user);
+        return "admin/editUser";
+    }
+
+    @PostMapping(value = "/updateUser")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public String updateUser(
+            @RequestParam(name = "user_id") Long id,
+            @RequestParam(name = "user_name") String name,
+            @RequestParam(name = "user_email") String email,
+            @RequestParam(name = "user_password") String password){
+
+        Users user = userRepository.findById(id).orElse(null);
+
+        user.setEmail(email);
+        user.setFullName(name);
+        if (!password.equals(user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(password));
+        }
+        userRepository.save(user);
+        return "redirect:/users";
+    }
+
+    @PostMapping(value = "/block")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public String block(
+            @RequestParam(name = "user_id") Long id){
+        Users user = userRepository.findById(id).orElse(null);
+        boolean status;
+        assert user != null;
+        status = !user.getIsActive();
+        user.setIsActive(status);
+        userRepository.save(user);
+        return "redirect:/users";
+    }
+    @PostMapping(value = "/delete")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public String delete(
+            @RequestParam(name = "user_id") Long id){
+        Users user = userRepository.findById(id).orElse(null);
+        userRepository.deleteById(id);
+        return "redirect:/users";
+    }
 }

@@ -19,6 +19,9 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         Users user = userRepository.findByDeletedAtNullAndEmail(s);
         User secUser = new User(user.getEmail(), user.getPassword(), user.getRoles());
+        if(!user.getIsActive()){
+            secUser.eraseCredentials();
+        }
         return secUser;
     }
 }

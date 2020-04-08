@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<Users, Long> {
 
     Users findByDeletedAtNullAndEmail(String email);
+    Users findByEmail(String email);
 
 }

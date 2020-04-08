@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="~{layouts/main.html}"
+      lang="en">
+<title>Update Personal Data</title>
+<div layout:fragment="header">
+    <section class="banner-area text-center" style="background-color: whitesmoke; background-image: none">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form th:action="@{'/changeData'}" method="post">
+                        <p th:text = "${error}" style="color: red"> </p>
+                        <input  th:value="${user.email}"
+                                type="email"
+                                name="email"
+                                style="
+                                        width: 50%;
+                                        border: 1px solid #eee;
+                                        padding: 12px 20px;
+                                        margin-bottom: 20px">
+                        <br>
+                        <input  th:value="${user.fullName}"
+                                type="text"
+                                name="name"
+                                style="
+                                        width: 50%;
+                                        border: 1px solid #eee;
+                                        padding: 12px 20px;
+                                        margin-bottom: 20px">
+                        <br>
+                        <input type="password"
+                               name="password"
+                               placeholder="Enter Password"
+                               onfocus="this.placeholder = ''"
+                               onblur="this.placeholder = 'Enter Password'" required
+                               style="
+                                width: 50%;
+                                border: 1px solid #eee;
+                                padding: 12px 20px;
+                                margin-bottom: 20px">
+                        <br>
+                        <button type="submit" class="template-btn">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</html>
