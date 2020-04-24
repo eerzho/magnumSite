@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="~{layouts/main.html}"
+      lang="en">
+<title>Add product</title>
+
+<div layout:fragment="header">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/nice-select.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/animate-3.7.0.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome-4.7.0.min.css}">
+    <link rel="stylesheet" type="text/fonts" th:href="@{/fonts/flat-icon/flaticon.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-4.1.3.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/owl-carousel.min.css}">
+    <div class="whole-wrap" style="background-color: whitesmoke">
+        <div class="container">
+            <div class="section-top-border">
+                <div class="row">
+                    <div class="col-lg-8 col-md-8">
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <h3 class="mb-30 title_color">Add Product</h3>
+                        <form action="/addProducts" method="post" enctype="multipart/form-data">
+                            <div class="switch-wrap d-flex justify-content-between">
+                                <p>Available</p>
+                                <div class="primary-checkbox">
+                                    <input type="checkbox" id="primary-checkbox" checked name="available">
+                                    <label for="primary-checkbox"></label>
+                                </div>
+                            </div>
+                            <div class="mt-10">
+                                <input type="file" name="photo" placeholder="Select photo" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Select photo'" required class="single-input">
+                            </div>
+                            <div class="mt-10">
+                                <input type="text" name="product_name" placeholder="Product name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Product name'" required class="single-input">
+                            </div>
+                            <div class="mt-10">
+                                <input type="number" name="price" placeholder="Price" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Price'" required class="single-input">
+                            </div>
+                            <br>
+                            <select name="category">
+                                <option selected th:value="${null}"> Select Category</option>
+                                <option th:each = "category : ${categoriesList}" th:text = "${category.category}" th:value="${category.id}"></option>
+                            </select>
+                            <br>
+                            <div class="mt-10">
+                                <input type="text" name="new_category" placeholder="Or input new category" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Or input new category'" class="single-input">
+                            </div>
+                            <br>
+                            <select name="company">
+                                <option selected th:value="${null}"> Select Company</option>
+                                <option th:each = "company : ${companiesList}" th:text = "${company.company}" th:value="${company.id}"></option>
+                            </select>
+                            <br>
+                            <div class="mt-10">
+                                <input type="text" name="new_company" placeholder="Or input new company" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Or input new company'" class="single-input">
+                            </div>
+                            <br>
+                            <div class="mt-10">
+                                <textarea class="single-textarea" name="description" placeholder="Descriptions" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Descriptions'" required></textarea>
+                            </div>
+                            <br>
+                            <button href="#" class="genric-btn primary">Add</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

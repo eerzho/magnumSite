@@ -68,7 +68,7 @@
                         <li><a th:href="@{'/'}" sec:authorize="hasAnyRole('ROLE_USER')">Cart</a></li>
                         <li><a th:href="@{'/profile'}" sec:authorize="hasAnyRole('ROLE_USER')">Profile</a></li>
 <!--                        вкладки для админа-->
-                        <li><a th:href="@{'/'}" sec:authorize="hasAnyRole('ROLE_ADMIN')">Add product</a></li>
+                        <li><a th:href="@{'/addProduct'}" sec:authorize="hasAnyRole('ROLE_ADMIN')">Add product</a></li>
                         <li><a th:href="@{'/users'}" sec:authorize="hasAnyRole('ROLE_ADMIN')">Users</a></li>
                         <li>
                             <a href="/signout">Log Out</a>
