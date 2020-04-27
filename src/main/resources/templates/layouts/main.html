@@ -47,7 +47,7 @@
                 <div class="main-menu" sec:authorize="isAnonymous()">
                     <ul>
                         <li class="active"><a th:href="@{'/'}">Home</a></li>
-                        <li><a th:href="@{'/'}">Catalog</a></li>
+                        <li><a th:href="@{'/catalog'}">Catalog</a></li>
                         <li><a th:href="@{'/'}">Contact</a></li>
                         <li><a th:href="@{'/login'}">Log in</a></li>
                         <li><a> <img th:width="20" th:height="20" src="images/lang/language.png" alt=""></a>
@@ -62,7 +62,7 @@
                 <div class="main-menu" sec:authorize="isAuthenticated()">
                     <ul>
                         <li class="active"><a th:href="@{'/'}">Home</a></li>
-                        <li><a th:href="@{'/menu'}">Catalog</a></li>
+                        <li><a th:href="@{'/catalog'}">Catalog</a></li>
 <!--                        вкладки для юзера -->
                         <li><a th:href="@{'/'}" sec:authorize="hasAnyRole('ROLE_USER')">Contact</a></li>
                         <li><a th:href="@{'/'}" sec:authorize="hasAnyRole('ROLE_USER')">Cart</a></li>

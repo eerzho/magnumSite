@@ -2,6 +2,7 @@ package kz.iitu.javaee.ilyasProject.controllers;
 
 import kz.iitu.javaee.ilyasProject.entities.*;
 import kz.iitu.javaee.ilyasProject.repositories.*;
+import org.apache.commons.collections.comparators.ReverseComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -201,6 +201,14 @@ public class MainController {
         return "redirect:/profile";
     }
 
+    @GetMapping(path = "/catalog")
+    public String catalog (Model model){
+        List<Products> allProducts = productRepository.findAll();
+        List<Products> simpleProducts = new ArrayList<>(allProducts);
+        model.addAttribute("productList", simpleProducts);
+        return "catalog";
+    }
+
     //    функций для admina
     @GetMapping(path = "/users")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
@@ -254,15 +262,23 @@ public class MainController {
             @RequestParam(name = "user_id") Long id,
             @RequestParam(name = "user_name") String name,
             @RequestParam(name = "user_email") String email,
-            @RequestParam(name = "user_password") String password){
+            @RequestParam(name = "user_password") String password,
+            Model model){
 
         Users user = userRepository.findById(id).orElse(null);
 
         user.setEmail(email);
         user.setFullName(name);
-        if (!password.equals(user.getPassword())) {
-            user.setPassword(passwordEncoder.encode(password));
+        if (password.length() > 6) {
+            if (!password.equals(user.getPassword())) {
+                user.setPassword(passwordEncoder.encode(password));
+
+            }
         }
+        else {
+            model.addAttribute("error", "Password must be at least 6");
+        }
+        model.addAttribute("succeed", "Succeed");
         userRepository.save(user);
         return "redirect:/users";
     }
@@ -306,7 +322,7 @@ public class MainController {
         model.addAttribute("companiesList", simpleCompanies);
         return "admin/addProduct";
     }
-
+    int productNumber = 0;
     @PostMapping(value = "/addProducts")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public String addProduts(
@@ -362,8 +378,8 @@ public class MainController {
             if (!uploadDir.exists()) {
                 uploadDir.mkdir();
             }
-            String uuidFile = UUID.randomUUID().toString();
-            resultFileName = uuidFile + "." + photo.getOriginalFilename();
+
+            resultFileName = photo.getOriginalFilename();
             photo.transferTo(new File(uploadPath + "/" +resultFileName));
         }
         Products product;

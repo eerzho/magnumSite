@@ -15,6 +15,9 @@ import java.util.Locale;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
+    @Value("upload.path")
+    private String uploadPath;
+
     @Bean
     public ReloadableResourceBundleMessageSource messageSource(){
         ReloadableResourceBundleMessageSource resource = new ReloadableResourceBundleMessageSource();
@@ -43,9 +46,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(changeInterceptor());
     }
-
-    @Value("upload.path")
-    private String uploadPath;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

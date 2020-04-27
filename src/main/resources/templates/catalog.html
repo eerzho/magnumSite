@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="~{layouts/main.html}"
+      lang="en">
+<title>Catalog</title>
+<div layout:fragment="header">
+    <!-- Food Area starts -->
+    <section class="food-area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-sm-12" th:each="product: ${productList}">
+                    <div class="single-food">
+                        <div class="food-img">
+                            <img th:src="'images/products/' + ${product.photo_name}" class="img-fluid" alt="">
+                        </div>
+                        <div class="food-content">
+                            <div class="d-flex justify-content-between">
+                                <h5 th:text="${product.name}"></h5>
+                                <span class="style-change"th:text="${product.price}"></span>
+                            </div>
+                            <p class="pt-3" th:text="${product.description}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Food Area End -->
+</div>
+</html>
