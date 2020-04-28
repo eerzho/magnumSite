@@ -4,8 +4,11 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="~{layouts/main.html}"
       lang="en">
-<title>Update Personal Data</title>
+<title th:text = "#{label.updatePersonalData}"></title>
+
+
 <div layout:fragment="header">
+
     <section class="banner-area text-center" style="background-color: whitesmoke; background-image: none">
         <div class="container">
             <div class="row">

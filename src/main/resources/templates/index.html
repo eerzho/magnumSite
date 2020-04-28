@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="~{layouts/main.html}"
-      lang="en">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorator="~{layouts/main.html}">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<base href="/">
 
-<title>Foodfan</title>
+<title th:text = "#{label.title}"></title>
 
 <div layout:fragment="header">
 
@@ -14,9 +17,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h6>the most interesting food in the world</h6>
-                    <h1>Discover the <span class="prime-color">flavors</span><br>
-                        <span class="style-change">of <span class="prime-color">food</span>fun</span></h1>
+                    <h6> <a th:text = "#{label.h6}"> </a> </h6>
+                    <h1><a th:text = "#{label.h1}"></a><span class="prime-color"><a th:text = "#{label.h1.2}"></a></span><br>
+                        <span class="style-change"><a th:text = "#{label.h1.3}"></a><span class="prime-color"><a th:text = "#{label.h1.4}"></a></span><a th:text = "#{label.h1.5}"></a></span></h1>
                 </div>
             </div>
         </div>
@@ -34,15 +37,9 @@
                 </div>
                 <div class="col-md-6 align-self-center">
                     <div class="welcome-text mt-5 mt-md-0">
-                        <h3><span class="style-change">welcome</span> <br>to food fun</h3>
-                        <p class="pt-3">Created god gathered don't you yielding herb you had. And isn't, god was saw.
-                            Dominion. Great sixth for in unto was. Open can't tree am waters brought. Divide after
-                            there.
-                            Was.</p>
-                        <p>Created god gathered don't you yielding herb you had. And isn't, god was saw. Dominion. Great
-                            sixth for in unto was. Open can't tree waters brought. Divide after there. Was. Created god
-                            gathered don't you yielding herb you had. And isn't god.</p>
-                        <a href="#" class="template-btn mt-3">book a table</a>
+                        <h3><span class="style-change"><a th:text = "#{label.h3}"></a></span> <br><a th:text = "#{label.h3.2}"></a></h3>
+                        <p th:text = "#{label.about}" class="pt-3"></p>
+                        <a href="#" th:text="#{label.book}" class="template-btn mt-3"></a>
                     </div>
                 </div>
             </div>
@@ -56,7 +53,7 @@
             <div class="row">
                 <div class="col-md-5">
                     <div class="section-top">
-                        <h3><span class="style-change">we serve</span> <br>delicious food</h3>
+                        <h3><span class="style-change"><a th:text = "#{label.h3.3}"></a></span> <br><a th:text = "#{label.h3.4}"></a></h3>
                         <p class="pt-3">They're fill divide i their yielding our after have him fish on there for
                             greater
                             man moveth, moved Won't together isn't for fly divide mids fish firmament on net.</p>
@@ -71,7 +68,7 @@
                         </div>
                         <div class="food-content">
                             <div class="d-flex justify-content-between">
-                                <h5>Mexican Eggrolls</h5>
+                                <h5><a th:text = "#{label.h5}"></a></h5>
                                 <span class="style-change">$14.50</span>
                             </div>
                             <p class="pt-3">Face together given moveth divided form Of Seasons that fruitful.</p>
@@ -85,7 +82,7 @@
                         </div>
                         <div class="food-content">
                             <div class="d-flex justify-content-between">
-                                <h5>chicken burger</h5>
+                                <h5><a th:text = "#{label.h5.2}"></a></h5>
                                 <span class="style-change">$9.50</span>
                             </div>
                             <p class="pt-3">Face together given moveth divided form Of Seasons that fruitful.</p>
@@ -99,7 +96,7 @@
                         </div>
                         <div class="food-content">
                             <div class="d-flex justify-content-between">
-                                <h5>topu lasange</h5>
+                                <h5><a th:text = "#{label.h5.3}"></a></h5>
                                 <span class="style-change">$12.50</span>
                             </div>
                             <p class="pt-3">Face together given moveth divided form Of Seasons that fruitful.</p>
@@ -113,7 +110,7 @@
                         </div>
                         <div class="food-content">
                             <div class="d-flex justify-content-between">
-                                <h5>pepper potatoas</h5>
+                                <h5><a th:text = "#{label.h5.4}"></a></h5>
                                 <span class="style-change">$14.50</span>
                             </div>
                             <p class="pt-3">Face together given moveth divided form Of Seasons that fruitful.</p>
@@ -127,7 +124,7 @@
                         </div>
                         <div class="food-content">
                             <div class="d-flex justify-content-between">
-                                <h5>bean salad</h5>
+                                <h5><a th:text = "#{label.h5.5}"></a></h5>
                                 <span class="style-change">$8.50</span>
                             </div>
                             <p class="pt-3">Face together given moveth divided form Of Seasons that fruitful.</p>
@@ -141,7 +138,7 @@
                         </div>
                         <div class="food-content">
                             <div class="d-flex justify-content-between">
-                                <h5>beatball hoagie</h5>
+                                <h5><a th:text = "#{label.h5.6}"></a></h5>
                                 <span class="style-change">$11.50</span>
                             </div>
                             <p class="pt-3">Face together given moveth divided form Of Seasons that fruitful.</p>
@@ -158,8 +155,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h2>Natural ingredients and testy food</h2>
-                    <h4 class="mt-4">some trendy and popular courses offerd</h4>
+                    <h2><a th:text = "#{label.h2}"></a></h2>
+                    <h4 class="mt-4"><a th:text = "#{label.h4}"></a></h4>
                     <a href="" class="template-btn template-btn2 mt-4">reservation</a>
                 </div>
             </div>
@@ -173,7 +170,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-top2 text-center">
-                        <h3>Our <span>special</span> deshes</h3>
+                        <h3> <a th:text = "#{label.h3.5}"></a></h3>
                         <p><i>Beast kind form divide night above let moveth bearing darkness.</i></p>
                     </div>
                 </div>
@@ -182,13 +179,13 @@
                 <div class="col-lg-5 col-md-6 align-self-center">
                     <h1>01.</h1>
                     <div class="deshes-text">
-                        <h3><span>Garlic</span><br> green beans</h3>
+                        <h3><span><a th:text = "#{label.h3.6}"></a></span> <br> <a th:text = "#{label.h3.7}"></a></h3>
                         <p class="pt-3">Be. Seed saying our signs beginning face give spirit own beast darkness morning
                             moveth green multiply she'd kind saying one shall, two which darkness have day image god
                             their
                             night. his subdue so you rule can.</p>
                         <span class="style-change">$12.00</span>
-                        <a href="#" class="template-btn3 mt-3">book a table <span><i
+                        <a href="#" class="template-btn3 mt-3"> book a table <span><i
                                 class="fa fa-long-arrow-right"></i></span></a>
                     </div>
                 </div>
@@ -203,13 +200,13 @@
                 <div class="col-lg-5 offset-lg-2 col-md-6 align-self-center order-1 order-md-2">
                     <h1>02.</h1>
                     <div class="deshes-text">
-                        <h3><span>Lemon</span><br> rosemary chicken</h3>
+                        <h3><span><a th:text = "#{label.h3.8}"></a></span><br> <a th:text = "#{label.h3.9}"></a></h3>
                         <p class="pt-3">Be. Seed saying our signs beginning face give spirit own beast darkness morning
                             moveth green multiply she'd kind saying one shall, two which darkness have day image god
                             their
                             night. his subdue so you rule can.</p>
                         <span class="style-change">$12.00</span>
-                        <a href="#" class="template-btn3 mt-3">book a table <span><i
+                        <a href="#"  class="template-btn3 mt-3">book a table <span><i
                                 class="fa fa-long-arrow-right"></i></span></a>
                     </div>
                 </div>
@@ -224,7 +221,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-top2 text-center">
-                        <h3>Customer <span>says</span></h3>
+                        <h3> <a th:text = "#{label.h3.10}"></a><span><a th:text = "#{label.h3.11}"></a></span></h3>
                         <p><i>Beast kind form divide night above let moveth bearing darkness.</i></p>
                     </div>
                 </div>
@@ -237,8 +234,8 @@
                                 <img src="images/customer1.png" alt="">
                             </div>
                             <div class="customer-text">
-                                <h5>adame nesane</h5>
-                                <span><i>Chief Customer</i></span>
+                                <h5> <a th:text = "#{label.h5.7}"></a> </h5>
+                                <span><i><a th:text = "#{label.h5.8}"></a></i></span>
                                 <p class="pt-3">You're had. Subdue grass Meat us winged years you'll doesn't. fruit two
                                     also
                                     won one yielding creepeth third give may never lie alternet food.</p>
@@ -249,8 +246,8 @@
                                 <img src="images/customer2.png" alt="">
                             </div>
                             <div class="customer-text">
-                                <h5>adam nahan</h5>
-                                <span><i>Chief Customer</i></span>
+                                <h5><a th:text = "#{label.h5.9}"></a></h5>
+                                <span><i><a th:text = "#{label.h5.10}"></a></i></span>
                                 <p class="pt-3">You're had. Subdue grass Meat us winged years you'll doesn't. fruit two
                                     also
                                     won one yielding creepeth third give may never lie alternet food.</p>
@@ -261,8 +258,8 @@
                                 <img src="images/customer1.png" alt="">
                             </div>
                             <div class="customer-text">
-                                <h5>adame nesane</h5>
-                                <span><i>Chief Customer</i></span>
+                                <h5><a th:text = "#{label.h5.11}"></a></h5>
+                                <span><i><a th:text = "#{label.h5.12}"></a></i></span>
                                 <p class="pt-3">You're had. Subdue grass Meat us winged years you'll doesn't. fruit two
                                     also
                                     won one yielding creepeth third give may never lie alternet food.</p>
@@ -281,7 +278,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-top2 text-center">
-                        <h3>Our <span>food</span> update</h3>
+                        <h3><a th:text = "#{label.h3.12}"></a><span><a th:text = "#{label.h3.13}"></a></span><a th:text = "#{label.h3.14}"></a></h3>
                         <p><i>Beast kind form divide night above let moveth bearing darkness.</i></p>
                     </div>
                 </div>
@@ -349,7 +346,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-top2 text-center">
-                        <h3>Book <span>your</span> table</h3>
+                        <h3><a th:text = "#{label.h3.15}"></a><span><a th:text = "#{label.h3.16}"></a></span><a th:text = "#{label.h3.17}"></a></h3>
                         <p><i>Beast kind form divide night above let moveth bearing darkness.</i></p>
                     </div>
                 </div>
@@ -376,7 +373,8 @@
                             <input type="text">
                         </div>
                         <div class="table-btn text-center">
-                            <a href="#" class="template-btn template-btn2 mt-4">book a table</a>
+                            <a href="#" th:text="#{label.book}" class="template-btn mt-3"></a>
+
                         </div>
                     </form>
                 </div>

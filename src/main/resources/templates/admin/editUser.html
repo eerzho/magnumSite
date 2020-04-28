@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="~{layouts/main.html}"
       lang="en">
-<title>Update user data</title>
+<title th:text="#{label.UpdateUserData}"></title>
 <div layout:fragment="header">
     <section class="banner-area text-center" style="background-color: whitesmoke; background-image: none">
         <div class="container">
@@ -39,17 +39,17 @@
                                         padding: 12px 20px;
                                         margin-bottom: 20px">
                         <br>
-                        <button type="submit" class="template-btn">Update</button>
+                        <button th:text="#{label.updateButton}" type="submit" class="template-btn"></button>
                     </form>
                     <br>
                     <form action="/block" method="post">
                         <input type="hidden" name="user_id" th:value="${user.id}">
-                        <button type="submit" class="template-btn">Block</button>
+                        <button th:text="#{label.blockButton}" type="submit" class="template-btn"></button>
                     </form>
                     <br>
                     <form action="/delete" method="post">
                         <input type="hidden" name="user_id" th:value="${user.id}">
-                        <button type="submit" class="template-btn">Delete</button>
+                        <button th:text="#{label.deleteButton}" type="submit" class="template-btn"></button>
                     </form>
                 </div>
             </div>
