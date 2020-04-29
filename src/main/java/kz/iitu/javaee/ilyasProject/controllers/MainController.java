@@ -2,7 +2,6 @@ package kz.iitu.javaee.ilyasProject.controllers;
 
 import kz.iitu.javaee.ilyasProject.entities.*;
 import kz.iitu.javaee.ilyasProject.repositories.*;
-import org.apache.commons.collections.comparators.ReverseComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -76,20 +75,17 @@ public class MainController {
     }
 //    эти функций для гостя сайта
     @GetMapping(path = "/login")
-    @PreAuthorize("isAnonymous()")
     public String login(Model model){
         return "guest/login";
     }
 
 
     @GetMapping(path = "/registration")
-    @PreAuthorize("isAnonymous()")
     public String registration (Model model){
         return "guest/registration";
     }
 
     @PostMapping(value = "/register")
-    @PreAuthorize("isAnonymous()")
     public String register(
             @RequestParam(name = "user_name") String name,
             @RequestParam(name = "user_email") String email,
@@ -207,6 +203,18 @@ public class MainController {
         List<Products> simpleProducts = new ArrayList<>(allProducts);
         model.addAttribute("productList", simpleProducts);
         return "catalog";
+    }
+
+    @GetMapping(path = "/productDetails/{id}")
+    public String productDetails(ModelMap model, @PathVariable(name = "id") Long id){
+        Products products = productRepository.findById(id).orElse(null);
+        assert products != null;
+        List<Companies> companies = new ArrayList<>(products.getCompany());
+        List<Categories> categories = new ArrayList<>(products.getCategory());
+        model.addAttribute("companies", companies);
+        model.addAttribute("categories", categories);
+        model.addAttribute("product", products);
+        return "productDetails";
     }
 
     //    функций для admina

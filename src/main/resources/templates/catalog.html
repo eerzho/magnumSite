@@ -11,6 +11,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4 col-sm-12" th:each="product: ${productList}">
+                    <a th:href = "@{'/productDetails/'+${product.id}}">
                     <div class="single-food">
                         <div class="food-img">
                             <img th:src="'images/products/' + ${product.photo_name}" class="img-fluid" alt="">
