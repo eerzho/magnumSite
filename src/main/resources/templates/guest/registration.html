@@ -4,7 +4,8 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="~{layouts/main.html}"
       lang="en">
-<title>Registration</title>
+<title th:text = "#{label.RegTitle}"></title>
+
 <div layout:fragment="header">
     <section class="banner-area text-center" style="background-color: whitesmoke; background-image: none">
         <div class="container">
@@ -59,10 +60,10 @@
                                         margin-bottom: 20px">
                         <br>
                         <span style="padding-right: 13%">
-                        <a type="submit" class="template-btn" th:href="@{'/login'}">Log in</a>
+                        <a th:text="#{label.login}" type="submit" class="template-btn" th:href="@{'/login'}"></a>
                         </span>
                         <span style="padding-left: 13%">
-                        <button type="submit" class="template-btn">Registration</button>
+                        <button th:text="#{label.registration}" type="submit" class="template-btn"></button>
                         </span>
                     </form>
                 </div>

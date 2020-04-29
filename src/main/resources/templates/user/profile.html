@@ -4,16 +4,16 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="~{layouts/main.html}"
       lang="en">
-<title>Profile</title>
+<title th:text = "#{label.profile}"></title>
 
 <div layout:fragment="header">
     <section class="banner-area text-center" style="background-color: whitesmoke; background-image: none">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <p><h3 style="color: black"> Welcome, <span th:text = "${user.fullName}"></span> </h3></p>
-                    <a type="submit" class="template-btn" th:href="@{'/updateData/'+${user.id}}">update personal data</a>
-                    <a type="submit" class="template-btn" th:href = "@{'/updatePassword/'+${user.id}}">change password</a>
+                    <p th:text="#{label.welcomeUser}"><h3 style="color: black"> <span th:text = "${user.fullName}"></span> </h3></p>
+                    <a th:text="#{label.updPers}" type="submit" class="template-btn" th:href="@{'/updateData/'+${user.id}}"></a>
+                    <a th:text="#{label.chngPassword}" type="submit" class="template-btn" th:href = "@{'/updatePassword/'+${user.id}}"></a>
                 </div>
             </div>
         </div>

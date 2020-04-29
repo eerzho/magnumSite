@@ -2,8 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      lang="en">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <!-- Required Meta Tags -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +14,7 @@
     <div class="spinner"></div>
 </div>
 <!-- Preloader End -->
-<title>Foodfun</title>
+<title th:text = "#{label.title}"></title>
 
 
 <!-- Favicon -->
@@ -47,7 +46,7 @@
                 <div class="main-menu" sec:authorize="isAnonymous()">
                     <ul>
                         <li class="active"><a th:href="@{'/'}">Home</a></li>
-                        <li><a th:href="@{'/catalog'}">Catalog</a></li>
+                        <li><a th:href="@{'/'}">Catalog</a></li>
                         <li><a th:href="@{'/'}">Contact</a></li>
                         <li><a th:href="@{'/login'}">Log in</a></li>
                         <li><a> <img th:width="20" th:height="20" src="images/lang/language.png" alt=""></a>
@@ -62,11 +61,15 @@
                 <div class="main-menu" sec:authorize="isAuthenticated()">
                     <ul>
                         <li class="active"><a th:href="@{'/'}">Home</a></li>
+                        <li><a th:href="@{'/menu'}">Catalog</a></li>
+                        <!--                        вкладки для юзера -->
                         <li><a th:href="@{'/catalog'}">Catalog</a></li>
 <!--                        вкладки для юзера -->
                         <li><a th:href="@{'/'}" sec:authorize="hasAnyRole('ROLE_USER')">Contact</a></li>
                         <li><a th:href="@{'/'}" sec:authorize="hasAnyRole('ROLE_USER')">Cart</a></li>
                         <li><a th:href="@{'/profile'}" sec:authorize="hasAnyRole('ROLE_USER')">Profile</a></li>
+                        <!--                        вкладки для админа-->
+                        <li><a th:href="@{'/'}" sec:authorize="hasAnyRole('ROLE_ADMIN')">Add product</a></li>
 <!--                        вкладки для админа-->
                         <li><a th:href="@{'/addProduct'}" sec:authorize="hasAnyRole('ROLE_ADMIN')">Add product</a></li>
                         <li><a th:href="@{'/users'}" sec:authorize="hasAnyRole('ROLE_ADMIN')">Users</a></li>
@@ -102,13 +105,13 @@
                 </div>
                 <div class="col-md-4">
                     <div class="single-widget single-widget2 my-5 my-md-0">
-                        <h5 class="mb-4">contact us</h5>
+                        <h5 class="mb-4"><a th:text = "#{label.contactUs}"></a></h5>
                         <div class="d-flex">
                             <div class="into-icon">
                                 <i class="fa fa-map-marker"></i>
                             </div>
                             <div class="info-text">
-                                <p>1234 Some St San Francisco, CA 94102, US 1.800.123.4567 </p>
+                                <p>1234 KZ, Almaty, Manas  </p>
                             </div>
                         </div>
                         <div class="d-flex">
@@ -116,7 +119,7 @@
                                 <i class="fa fa-phone"></i>
                             </div>
                             <div class="info-text">
-                                <p>(123) 456 78 90</p>
+                                <p>8(777)-777-77-77</p>
                             </div>
                         </div>
                         <div class="d-flex">
@@ -124,14 +127,14 @@
                                 <i class="fa fa-envelope-o"></i>
                             </div>
                             <div class="info-text">
-                                <p>support@axiomthemes.com</p>
+                                <p>support@gmail.com</p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="single-widget single-widget3">
-                        <h5 class="mb-4">opening hours</h5>
+                        <h5 class="mb-4"> <a th:text = "#{label.opening}"></a></h5>
                         <p>Monday ...................... Closed</p>
                         <p>Tue-Fri .............. 10 am - 12 pm</p>
                         <p>Sat-Sun ............... 8 am - 11 pm</p>
@@ -145,21 +148,19 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-7 col-md-6">
-                        <span><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i
-                                    class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com"
-                                                                                        target="_blank">Colorlib</a>
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></span>
+                        <span>
+                                Copyright &copy;<script>document.write(new Date().getFullYear());</script> by Erkinbay Zhanbolat and Kaliyev Adil
+                                        <i class="fa fa-heart-o" aria-hidden="true"></i> <a href="#" target="_blank">CSSE-1703K</a>
+                           </span>
                 </div>
                 <div class="col-lg-5 col-md-6">
                     <div class="social-icons">
                         <ul>
-                            <li class="no-margin">Follow Us</li>
+                            <a th:text = "#{label.followUs}"></a><li class="no-margin"></li>
                             <li><a href="#"><i class="fa fa-facebook"></i></a></li>
                             <li><a href="#"><i class="fa fa-twitter"></i></a></li>
                             <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                            <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                            <li><a href="https://www.instagram.com/cristiano/?hl=ru"><i class="fa fa-instagram"></i></a></li>
                         </ul>
                     </div>
                 </div>

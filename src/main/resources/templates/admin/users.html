@@ -4,13 +4,13 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="~{layouts/main.html}"
       lang="en">
-<title>Users</title>
+<title th:text="#{label.users}"></title>
 <div layout:fragment="header">
     <section class="banner-area text-center" style="background-color: whitesmoke; background-image: none">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <p><h3 style="color: black"> Add user </h3> </p>
+                    <p><h3 th:text="#{label.addUser}" style="color: black"></h3> </p>
                     <form action="/addUser" method="post">
                         <input type="email"
                                name="user_email"
@@ -45,7 +45,7 @@
                                         padding: 12px 20px;
                                         margin-bottom: 20px">
                         <br>
-                        <button type="submit" class="template-btn">Add</button>
+                        <button th:text="#{label.Add}" type="submit" class="template-btn"></button>
                     </form>
 
                 </div>
@@ -77,7 +77,7 @@
                         <td th:text = "${usr.email}"></td>
                         <td th:text = "${usr.fullName}"></td>
                         <td>
-                            <a th:href = "@{'/editUser/'+${usr.id}}">Details</a>
+                            <a th:text="#{label.Details}" th:href = "@{'/editUser/'+${usr.id}}"></a>
                         </td>
                     </tr>
                     </tbody>
