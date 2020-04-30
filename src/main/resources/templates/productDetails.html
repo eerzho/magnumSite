@@ -23,7 +23,7 @@
                <h3 class="mb-30 title_color" th:text="${product.name}"></h3>
                <div class="row">
                    <div class="col-md-3">
-                       <img th:src="'images/products/' + ${product.photo_name}" alt="" class="img-fluid">
+                       <img th:src="@{'images/products/'+${product.photo_name}}" alt="" class="img-fluid">
                    </div>
                    <div class="col-md-9 mt-sm-20 left-align-p">
                        <p>
@@ -37,7 +37,7 @@
                        </p>
                        <p th:text="'Description: ' + ${product.description}"></p>
                        <form method="get" th:action="@{'/addCart'}" sec:authorize="isAuthenticated()">
-                           <input type="hidden" th:value="${product.id}">
+                           <input type="hidden" th:value="${product.id}" name = "productId">
                            <button class="genric-btn primary circle">Add cart</button>
                        </form>
                    </div>

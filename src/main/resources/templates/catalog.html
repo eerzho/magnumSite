@@ -14,7 +14,7 @@
                     <a th:href = "@{'/productDetails/'+${product.id}}">
                     <div class="single-food">
                         <div class="food-img">
-                            <img th:src="'images/products/' + ${product.photo_name}" class="img-fluid" alt="">
+                            <img th:src="@{'images/products/'+${product.photo_name}}" class="img-fluid" alt="">
                         </div>
                         <div class="food-content">
                             <div class="d-flex justify-content-between">

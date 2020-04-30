@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorator="~{layouts/main.html}"
+      lang="en">
+<title>Catalog</title>
+<div layout:fragment="header">
+    <!-- Food Area starts -->
+    <section class="food-area section-padding">
+        <div class="container">
+            <div class="row">
+                <table cellpadding="20" class="table table-stripped">
+                    <thead>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Price
+                        </th>
+                        <th>
+                            Delete
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each = "cart : ${carts}">
+                        <td th:text = "${cart.name}"></td>
+                        <td th:text = "${cart.price}"></td>
+                        <td>
+                            <form method="get" th:action="@{'/deleteProduct'}" sec:authorize="isAuthenticated()">
+                                <input type="hidden" th:value="${cart.id}" name = "productId">
+                                <button class="genric-btn primary circle">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    <!-- Food Area End -->
+</div>
+</html>

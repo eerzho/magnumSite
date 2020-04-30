@@ -43,6 +43,9 @@ public class MainController {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private CartRepository cartRepository;
+
     @Value("${upload.path}")
     private String uploadPath;
 
@@ -66,10 +69,10 @@ public class MainController {
         Products productData = null;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(!(authentication instanceof AnonymousAuthenticationToken)){
-            Products secUser = (Products) authentication.getPrincipal();
+            Products secProducts = (Products) authentication.getPrincipal();
 
-            System.out.println("TUTA GET PRODUCTNAME" + secUser.getName());
-            productData = productRepository.findByName(secUser.getName());
+            System.out.println("TUTA GET PRODUCTNAME" + secProducts.getName());
+            productData = productRepository.findByName(secProducts.getName());
         }
         return productData;
     }
@@ -200,8 +203,7 @@ public class MainController {
     @GetMapping(path = "/catalog")
     public String catalog (Model model){
         List<Products> allProducts = productRepository.findAll();
-        List<Products> simpleProducts = new ArrayList<>(allProducts);
-        model.addAttribute("productList", simpleProducts);
+        model.addAttribute("productList", allProducts);
         return "catalog";
     }
 
@@ -217,10 +219,66 @@ public class MainController {
         return "productDetails";
     }
 
+    @GetMapping(value = "/addCart")
+    @PreAuthorize("isAuthenticated()")
+    public String addCart(
+            @RequestParam(name = "productId") Long productId,
+            ModelMap model){
+        Cart cart = new Cart();
+        Products products = productRepository.findById(productId).orElse(null);
+        List<Cart> allCarts = cartRepository.findAll();
+        boolean test = false;
+        for (Cart u: allCarts) {
+            if (u.getProduct() == products) {
+                test = true;
+                break;
+            }
+        }
+        if (!test) {
+            cart.setUser(getUserData());
+            cart.setProduct(products);
+            cartRepository.save(cart);
+        }
+        else {
+            return "redirect:/productDetails/" + productId;
+        }
+        return "redirect:/catalog";
+    }
+
+    @GetMapping(value = "/cart")
+    @PreAuthorize("isAuthenticated()")
+    public String cart(
+            ModelMap model) {
+        List<Cart> allCarts = cartRepository.findAll();
+        List<Products> productsFromCarts = new ArrayList<>();
+        for (Cart u: allCarts) {
+            if (u.getUser() == getUserData()) {
+                productsFromCarts.add(u.getProduct());
+            }
+        }
+        model.addAttribute("carts", productsFromCarts);
+        return "user/cart";
+    }
+    @GetMapping(value = "/deleteProduct")
+    @PreAuthorize("isAuthenticated()")
+    public String deleteProduct(
+            @RequestParam(name = "productId") Long productId){
+        Products products = productRepository.findById(productId).orElse(null);
+        Users user = getUserData();
+        List<Cart> allCarts = cartRepository.findAll();
+        Long id = null;
+        for (Cart u: allCarts){
+            if (u.getProduct() == products && u.getUser() == user) {
+                id = u.getId();
+            }
+        }
+        cartRepository.deleteById(id);
+        return "redirect:/cart";
+    }
     //    функций для admina
     @GetMapping(path = "/users")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public String users(Model model){
+    public String users(ModelMap model){
         model.addAttribute("user", getUserData());
 
         List<Users> allUsers = userRepository.findAll();
@@ -330,7 +388,6 @@ public class MainController {
         model.addAttribute("companiesList", simpleCompanies);
         return "admin/addProduct";
     }
-    int productNumber = 0;
     @PostMapping(value = "/addProducts")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public String addProduts(
@@ -387,7 +444,7 @@ public class MainController {
                 uploadDir.mkdir();
             }
 
-            resultFileName = photo.getOriginalFilename();
+            resultFileName = product_name + photo.getOriginalFilename();
             photo.transferTo(new File(uploadPath + "/" +resultFileName));
         }
         Products product;
