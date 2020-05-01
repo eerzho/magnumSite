@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -82,6 +83,10 @@ public class MainController {
         return "guest/login";
     }
 
+    @GetMapping(path = "/contact")
+    public String contact(Model model){
+        return "contact";
+    }
 
     @GetMapping(path = "/registration")
     public String registration (Model model){
@@ -203,7 +208,13 @@ public class MainController {
     @GetMapping(path = "/catalog")
     public String catalog (Model model){
         List<Products> allProducts = productRepository.findAll();
-        model.addAttribute("productList", allProducts);
+        List<Products> available = new ArrayList<>();
+        for (Products u: allProducts) {
+            if (u.getAvailability()) {
+                available.add(u);
+            }
+        }
+        model.addAttribute("productList", available);
         return "catalog";
     }
 
@@ -386,6 +397,8 @@ public class MainController {
             simpleCompanies.add(u);
         }
         model.addAttribute("companiesList", simpleCompanies);
+        List<Products> productsList = productRepository.findAll();
+        model.addAttribute("products", productsList);
         return "admin/addProduct";
     }
     @PostMapping(value = "/addProducts")
@@ -400,7 +413,7 @@ public class MainController {
             @RequestParam(name = "description") String description,
             @RequestParam(name = "new_company") String new_company,
             @RequestParam(name = "new_category") String new_category,
-            Model model) throws IOException {
+            ModelMap model) throws IOException {
         String resultFileName = " ";
         Set<Companies> companies = new HashSet<>();
         if (company == null) {
@@ -452,5 +465,11 @@ public class MainController {
         productRepository.save(product);
         return "redirect:/addProduct";
     }
-
+    @GetMapping(value = "/deleteProductAdmin")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public String deleteProductAdmin(
+            @RequestParam(name = "productId") Long productId){
+        productRepository.deleteById(productId);
+        return "redirect:/addProduct";
+    }
 }

@@ -69,6 +69,41 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <table cellpadding="20" class="table table-stripped">
+                    <thead>
+                    <tr>
+                        <th>
+                            ID
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Price
+                        </th>
+                        <th>
+                            Delete
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each = "product : ${products}">
+                        <td th:text = "${product.id}"></td>
+                        <td th:text = "${product.name}"></td>
+                        <td th:text = "${product.price}"></td>
+                        <td>
+                            <form method="get" th:action="@{'/deleteProductAdmin'}">
+                                <input type="hidden" th:value="${product.id}" name = "productId">
+                                <button class="genric-btn primary circle">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 </html>
